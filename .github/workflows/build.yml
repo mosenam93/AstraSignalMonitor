@@ -1,4 +1,4 @@
-name: Build Astra APK
+name: Build WiFi Guard APK
 
 on:
   workflow_dispatch:
@@ -13,8 +13,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Extract project
-        run: unzip -q project.zip -d buildsrc
+      - name: Extract WiFi Guard project
+        run: |
+          rm -rf buildsrc
+          mkdir -p buildsrc
+          unzip -q WiFiGuard_GitHub_Project.zip -d buildsrc
 
       - name: Set up Java 17
         uses: actions/setup-java@v4
@@ -32,12 +35,12 @@ jobs:
         with:
           gradle-version: '8.9'
 
-      - name: Build APK
-        run: gradle -p buildsrc/AstraSignalMonitor_Android_0.2 :app:assembleDebug --stacktrace
+      - name: Build WiFi Guard APK
+        run: gradle -p buildsrc/WiFiGuard :app:assembleDebug --stacktrace
 
-      - name: Upload APK
+      - name: Upload WiFi Guard APK
         uses: actions/upload-artifact@v4
         with:
-          name: AstraSignalMonitor-debug
-          path: buildsrc/AstraSignalMonitor_Android_0.2/app/build/outputs/apk/debug/app-debug.apk
+          name: WiFiGuard-debug
+          path: buildsrc/WiFiGuard/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
